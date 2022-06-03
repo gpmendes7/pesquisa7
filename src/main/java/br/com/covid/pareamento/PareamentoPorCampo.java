@@ -151,12 +151,12 @@ public class PareamentoPorCampo {
 								int indiceCampoCaso = buscarPosicao(filtro.getCampo(), cabecalhoCasos);
 								int indiceCampoControle = buscarPosicao(filtro.getCampo(), cabecalhoControles);
 								controlesFiltrados = filtrarPorCampo(controlesFiltrados, casoFiltrado[indiceCampoCaso], indiceCampoControle);
-								System.out.println("Número de casos filtrados por campo " + filtro.getCampo() + " : " + controlesFiltrados.size());
+								System.out.println("Número de casos filtrados por campo " + filtro.getCampo() + ": " + controlesFiltrados.size());
 							} else {
 								int indiceDataCaso = buscarPosicao(filtro.getCampo(), cabecalhoCasos);
 								int indiceDataControle = buscarPosicao(filtro.getCampo(), cabecalhoControles);
 								controlesFiltrados = filtrarPorData(controlesFiltrados, casoFiltrado[indiceDataCaso], indiceDataControle, 1);
-								System.out.println("Número de casos filtrados por campo " + filtro.getCampo() + " : " + controlesFiltrados.size());
+								System.out.println("Número de casos filtrados por campo " + filtro.getCampo() + ": " + controlesFiltrados.size());
 							}
 						}
 					}
@@ -219,8 +219,6 @@ public class PareamentoPorCampo {
 				}
 				i++;			
 			}
-			//controlesFiltradosCasosFiltrados.addAll(controlesPositivosFiltradosCasoFiltrado.stream().limit(TAMANHO_PAREAMENTO).collect(Collectors.toList()));
-			//controlesFiltradosCasosFiltrados.addAll(controlesNegativosFiltradosCasoFiltrado.stream().limit(TAMANHO_PAREAMENTO).collect(Collectors.toList()));
 		} else {
 			i = 0;
 			for(String[] controleFiltradoCasoFiltrado: controlesFiltradosCasoFiltrado) {
@@ -231,7 +229,6 @@ public class PareamentoPorCampo {
 				}
 				i++;			
 			}
-			//controlesFiltradosCasosFiltrados.addAll(controlesFiltradosCasoFiltrado.stream().limit(TAMANHO_PAREAMENTO).collect(Collectors.toList()));
 		}
 		
 		for(Filtro filtro: filtros) {
