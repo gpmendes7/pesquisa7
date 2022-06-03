@@ -101,6 +101,8 @@ public class PareamentoPorCampo {
 			System.out.println("Não optou por filtro de valores positivos e negativos!");
 		}
 		
+		int i;
+		
 		if(indiceCampoPositivosENegativos != -1 && campoPositivosENegativos != null) {
 			for (String[] controle : controles) {
 				 if(!valoresPositivosENegativos.contains(controle[indiceCampoPositivosENegativos]))
@@ -108,7 +110,7 @@ public class PareamentoPorCampo {
 			}
 			
 			System.out.println("Valores distintos encontrados para o campo " + campoPositivosENegativos + ":");
-			int i = 0;
+		    i = 0;
 			
 			for(String valorPositivosENegativos: valoresPositivosENegativos) {
 				System.out.println((i+1) + " - " + valorPositivosENegativos);
@@ -125,7 +127,27 @@ public class PareamentoPorCampo {
 			System.out.println("Valor escolhido para negativo foi " + valoresPositivosENegativos.get(opcaoNegativo-1));
 			mapaPositivosENegativos.put("negativo", valoresPositivosENegativos.get(opcaoNegativo-1));
 		}
-			
+		
+		System.out.println("Número de filtros aplicados: " + filtros.size());
+		
+		List<Filtro> filtrosOrdenados = new ArrayList<Filtro>();
+		
+		i = 0;
+		for(Filtro filtro: filtros) {
+			System.out.println((i+1) + " - " + filtro.getCampo());
+			i++;
+		}
+		
+		System.out.println("Defina uma ordem para aplicação dos filtros!");
+		
+		i = 0;
+		while(i < filtros.size()) {
+			System.out.println("Filtro " + (i+1) + ": ");
+			int opcaoFiltro = Integer.parseInt(scanner.nextLine());
+			filtrosOrdenados.add(i, filtros.get(opcaoFiltro-1));
+			i++;
+		}
+					
 		List<String[]> controlesFiltradosCasosFiltrados = new ArrayList<String[]>();
 		
 		for (String[] casoFiltrado : casosFiltrados) {	
@@ -145,7 +167,7 @@ public class PareamentoPorCampo {
 						controlesFiltrados = filtrarPorFaixaEtaria(controlesFiltrados, idadeMinima, idadeMaxima, indiceIdadeControles);
 					}
 					
-					for(Filtro filtro: filtros) {
+					for(Filtro filtro: filtrosOrdenados) {
 						if(!filtro.isDesmarcado()) {
 							if(!filtro.isData()) {
 								int indiceCampoCaso = buscarPosicao(filtro.getCampo(), cabecalhoCasos);
@@ -161,8 +183,8 @@ public class PareamentoPorCampo {
 						}
 					}
 					
-					if(indiceFiltroDesmarcar <= filtros.size()-1) {
-						Filtro filtroASerDesmarcado = filtros.get(indiceFiltroDesmarcar);
+					if(indiceFiltroDesmarcar <= filtrosOrdenados.size()-1) {
+						Filtro filtroASerDesmarcado = filtrosOrdenados.get(indiceFiltroDesmarcar);
 						if(!filtroASerDesmarcado.isData()) {
 							filtroASerDesmarcado.setDesmarcado(true);
 							System.out.println("Filtro por campo " + filtroASerDesmarcado.getCampo() + " desmarcado!");
@@ -198,7 +220,6 @@ public class PareamentoPorCampo {
 		System.out.println("controlesNegativosFiltradosCasoFiltrado.size(): " + controlesNegativosFiltradosCasoFiltrado.size());
 		System.out.println("controlesFiltradosCasoFiltrado.size(): " + controlesFiltradosCasoFiltrado.size());
 		
-		int i;
 		if(!valoresPositivosENegativos.isEmpty()) {
 			i = 0;
 			for(String[] controlePositivoFiltradoCasoFiltrado: controlesPositivosFiltradosCasoFiltrado) {
