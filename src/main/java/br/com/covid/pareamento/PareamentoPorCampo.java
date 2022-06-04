@@ -4,8 +4,12 @@ import static br.com.covid.util.DataUtil.alterarDiasEmData;
 import static br.com.covid.util.DataUtil.dataEstaEmIntervalo;
 import static br.com.covid.util.StringUtil.normalizarString;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
@@ -20,6 +24,9 @@ import java.util.stream.Collectors;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import com.opencsv.CSVWriter;
+
+import br.com.covid.util.ConversaoSusSivep;
 
 public class PareamentoPorCampo {
 	
@@ -27,6 +34,8 @@ public class PareamentoPorCampo {
 	
 	public static void main(String[] args) throws IOException, ParseException {
 		List<String[]> casos = carregarRegistros("src/main/resources/csv/casos.csv");
+		
+		System.out.println("casos.size(): " + casos.size());
 		
 		String[] cabecalhoCasos = casos.get(0);
 		
@@ -60,6 +69,8 @@ public class PareamentoPorCampo {
 		} else {
 			System.out.println("Não optou por filtro de faixa etária!");
 		}
+		
+		System.out.println("casosFiltrados.size(): " + casosFiltrados.size());
 				
 		List<Filtro> filtros = new ArrayList<Filtro>();
 		
@@ -263,6 +274,8 @@ public class PareamentoPorCampo {
 			
 		}
 		
+		salvarRegistros(casosFiltrados, cabecalhoCasos, controlesFiltradosCasosFiltrados, cabecalhoControles);
+		
 		scanner.close();
 	}
 
@@ -271,6 +284,70 @@ public class PareamentoPorCampo {
 		CSVReader csvReader = new CSVReaderBuilder(reader).build();
 		
 		return csvReader.readAll();
+	}
+	
+	private static void salvarRegistros(List<String[]> casos, String[] cabecalhoCasos, List<String[]> controles, String[] cabecalhoControles) throws ParseException, FileNotFoundException, IOException {
+		 String[] cabecalho = {"id", "municipio", "nomeCompleto", "dataNascimento", "racaCor", "dataNotificacao",
+				               "idade", "resultadoTeste", "evolucaoCaso", "sexo", "sexoRedome", "etniaRedome", "semanaNotificacao",
+				               "origem"};
+	        
+		 List<String[]> registros = new ArrayList<>();
+		 registros.add(cabecalho);
+		 
+		 for(String[] caso: casos) {
+			 int indiceId = buscarPosicao("id", cabecalhoCasos);
+			 int indiceMunicipio = buscarPosicao("municipio", cabecalhoCasos);
+			 int indiceNomeCompleto = buscarPosicao("nomeCompleto", cabecalhoCasos);
+			 int indiceDataNascimento = buscarPosicao("dataNascimento", cabecalhoCasos);
+			 int indiceRacaCor = buscarPosicao("racaCor", cabecalhoCasos);
+			 int indiceDataNotificacao = buscarPosicao("dataNotificacao", cabecalhoCasos);
+			 int indiceIdade = buscarPosicao("idade", cabecalhoCasos);
+			 int indiceResultadoTeste = buscarPosicao("resultadoTeste", cabecalhoCasos);
+			 int indiceEvolucaoCaso = buscarPosicao("evolucaoCaso", cabecalhoCasos);
+			 int indiceSexo = buscarPosicao("sexo", cabecalhoCasos);
+			 int indiceSexoRedome = buscarPosicao("sexoRedome", cabecalhoCasos);
+			 int indiceEtniaRedome = buscarPosicao("etniaRedome", cabecalhoCasos);
+			 
+			 String[] registroCaso = {caso[indiceId], caso[indiceMunicipio], caso[indiceNomeCompleto],
+									  caso[indiceDataNascimento], caso[indiceRacaCor], caso[indiceDataNotificacao],
+									  caso[indiceIdade], caso[indiceResultadoTeste], caso[indiceEvolucaoCaso],
+									  caso[indiceSexo], caso[indiceSexoRedome], caso[indiceEtniaRedome], "caso"};
+					 
+			 registros.add(registroCaso);
+		 }
+		
+		 
+		 for(String[] controle: controles) {
+			 int indiceId = buscarPosicao("id", cabecalhoControles);
+			 int indiceMunicipio = buscarPosicao("municipio", cabecalhoControles);
+			 int indiceNomeCompleto = buscarPosicao("nomeCompleto", cabecalhoControles);
+			 int indiceDataNascimento = buscarPosicao("dataNascimento", cabecalhoControles);
+			 int indiceRacaCor = buscarPosicao("racaCor", cabecalhoControles);
+			 int indiceDataNotificacao = buscarPosicao("dataNotificacao", cabecalhoControles);
+			 int indiceIdade = buscarPosicao("idade", cabecalhoControles);
+			 int indiceResultadoTeste = buscarPosicao("resultadoTeste", cabecalhoControles);
+			 int indiceEvolucaoCaso = buscarPosicao("evolucaoCaso", cabecalhoControles);
+			 int indiceSexo = buscarPosicao("sexo", cabecalhoControles);
+			 int indiceSexoRedome = buscarPosicao("sexoRedome", cabecalhoControles);
+			 int indiceEtniaRedome = buscarPosicao("etniaRedome", cabecalhoControles);
+			 
+			 String[] registroControle = {controle[indiceId], controle[indiceMunicipio], controle[indiceNomeCompleto],
+									  ConversaoSusSivep.converterDataSusParaSivep(controle[indiceDataNascimento]), 
+									  controle[indiceRacaCor], ConversaoSusSivep.converterDataSusParaSivep(controle[indiceDataNotificacao]),
+									  controle[indiceIdade], controle[indiceResultadoTeste], controle[indiceEvolucaoCaso],
+									  controle[indiceSexo], controle[indiceSexoRedome], controle[indiceEtniaRedome], "controle"};
+					 
+			 registros.add(registroControle);
+		 }
+		 
+		 String nomeArquivo = "src/main/resources/csv/pareamento.csv";
+
+         try (var fos = new FileOutputStream(nomeArquivo);
+              var osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+              var writer = new CSVWriter(osw)) {
+              writer.writeAll(registros);
+        }
+		
 	}
 	
 	private static int buscarPosicao(String campo, String[] cabecalho) {
