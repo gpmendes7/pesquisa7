@@ -307,11 +307,13 @@ public class PareamentoPorCampo {
 			 int indiceSexo = buscarPosicao("sexo", cabecalhoCasos);
 			 int indiceSexoRedome = buscarPosicao("sexoRedome", cabecalhoCasos);
 			 int indiceEtniaRedome = buscarPosicao("etniaRedome", cabecalhoCasos);
+			 int indiceSemanaNotificacao = buscarPosicao("semanaNotificacao", cabecalhoCasos);
 			 
 			 String[] registroCaso = {caso[indiceId], caso[indiceMunicipio], caso[indiceNomeCompleto],
 									  caso[indiceDataNascimento], caso[indiceRacaCor], caso[indiceDataNotificacao],
 									  caso[indiceIdade], caso[indiceResultadoTeste], caso[indiceEvolucaoCaso],
-									  caso[indiceSexo], caso[indiceSexoRedome], caso[indiceEtniaRedome], "caso"};
+									  caso[indiceSexo], caso[indiceSexoRedome], caso[indiceEtniaRedome], caso[indiceSemanaNotificacao],
+									  "caso"};
 					 
 			 registros.add(registroCaso);
 		 }
@@ -330,12 +332,14 @@ public class PareamentoPorCampo {
 			 int indiceSexo = buscarPosicao("sexo", cabecalhoControles);
 			 int indiceSexoRedome = buscarPosicao("sexoRedome", cabecalhoControles);
 			 int indiceEtniaRedome = buscarPosicao("etniaRedome", cabecalhoControles);
+			 int indiceSemanaNotificacao = buscarPosicao("semanaNotificacao", cabecalhoControles);
 			 
 			 String[] registroControle = {controle[indiceId], controle[indiceMunicipio], controle[indiceNomeCompleto],
 									  ConversaoSusSivep.converterDataSusParaSivep(controle[indiceDataNascimento]), 
 									  controle[indiceRacaCor], ConversaoSusSivep.converterDataSusParaSivep(controle[indiceDataNotificacao]),
 									  controle[indiceIdade], controle[indiceResultadoTeste], controle[indiceEvolucaoCaso],
-									  controle[indiceSexo], controle[indiceSexoRedome], controle[indiceEtniaRedome], "controle"};
+									  controle[indiceSexo], controle[indiceSexoRedome], controle[indiceEtniaRedome], controle[indiceSemanaNotificacao],
+									  "controle"};
 					 
 			 registros.add(registroControle);
 		 }
