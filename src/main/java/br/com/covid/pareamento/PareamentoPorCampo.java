@@ -165,7 +165,7 @@ public class PareamentoPorCampo {
 			List<String[]> controlesPositivosFiltradosCasoFiltrado = new ArrayList<String[]>();
 			List<String[]> controlesNegativosFiltradosCasoFiltrado = new ArrayList<String[]>();
 			List<String[]> controlesFiltradosCasoFiltrado = new ArrayList<String[]>();
-			int indiceFiltroDesmarcar = 0;
+			int indiceFiltroDesmarcar = filtrosOrdenados.size()-1;
 			
 			while((!valoresPositivosENegativos.isEmpty() && 
 				  (controlesPositivosFiltradosCasoFiltrado.size() < TAMANHO_PAREAMENTO || controlesNegativosFiltradosCasoFiltrado.size() < TAMANHO_PAREAMENTO))
@@ -194,12 +194,12 @@ public class PareamentoPorCampo {
 						}
 					}
 					
-					if(indiceFiltroDesmarcar <= filtrosOrdenados.size()-1) {
+					if(indiceFiltroDesmarcar >= 0) {
 						Filtro filtroASerDesmarcado = filtrosOrdenados.get(indiceFiltroDesmarcar);
 						if(!filtroASerDesmarcado.isData()) {
 							filtroASerDesmarcado.setDesmarcado(true);
 							System.out.println("Filtro por campo " + filtroASerDesmarcado.getCampo() + " desmarcado!");
-							indiceFiltroDesmarcar++;
+							indiceFiltroDesmarcar--;
 						} else {
 							if(filtroASerDesmarcado.getNumeroSemanas() < 4) {
 								filtroASerDesmarcado.acrescentarSemanas();
@@ -207,7 +207,7 @@ public class PareamentoPorCampo {
 							} else {
 								filtroASerDesmarcado.setDesmarcado(true);
 								System.out.println("Filtro por campo " + filtroASerDesmarcado.getCampo() + " desmarcado!");
-								indiceFiltroDesmarcar++;
+								indiceFiltroDesmarcar--;
 							}
 						}					
 					}
