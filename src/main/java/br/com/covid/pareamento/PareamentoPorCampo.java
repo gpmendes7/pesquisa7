@@ -309,7 +309,7 @@ public class PareamentoPorCampo {
 			 int indiceEtniaRedome = buscarPosicao("etniaRedome", cabecalhoCasos);
 			 int indiceSemanaNotificacao = buscarPosicao("semanaNotificacao", cabecalhoCasos);
 			 
-			 String[] registroCaso = {caso[indiceId], caso[indiceMunicipio], caso[indiceNomeCompleto],
+			 String[] registroCaso = {caso[indiceId], normalizarString(caso[indiceMunicipio]), caso[indiceNomeCompleto],
 									  caso[indiceDataNascimento], caso[indiceRacaCor], caso[indiceDataNotificacao],
 									  caso[indiceIdade], caso[indiceResultadoTeste], caso[indiceEvolucaoCaso],
 									  caso[indiceSexo], caso[indiceSexoRedome], caso[indiceEtniaRedome], caso[indiceSemanaNotificacao],
@@ -334,7 +334,7 @@ public class PareamentoPorCampo {
 			 int indiceEtniaRedome = buscarPosicao("etniaRedome", cabecalhoControles);
 			 int indiceSemanaNotificacao = buscarPosicao("semanaNotificacao", cabecalhoControles);
 			 
-			 String[] registroControle = {controle[indiceId], controle[indiceMunicipio], controle[indiceNomeCompleto],
+			 String[] registroControle = {controle[indiceId], normalizarString(controle[indiceMunicipio]), controle[indiceNomeCompleto],
 									  ConversaoSusSivep.converterDataSusParaSivep(controle[indiceDataNascimento]), 
 									  controle[indiceRacaCor], ConversaoSusSivep.converterDataSusParaSivep(controle[indiceDataNotificacao]),
 									  controle[indiceIdade], controle[indiceResultadoTeste], controle[indiceEvolucaoCaso],
